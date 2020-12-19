@@ -25,11 +25,9 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	certmanagerv1 "github.com/ryota-sakamoto/cert-manager-external-sample/api/v1"
-	v1 "github.com/ryota-sakamoto/cert-manager-external-sample/api/v1"
 	"github.com/ryota-sakamoto/cert-manager-external-sample/controllers"
 	// +kubebuilder:scaffold:imports
 )
@@ -70,26 +68,22 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = builder.ControllerManagedBy(mgr).
-		For(&v1.CustomIssuer{}).
-		Complete(&controllers.CustomIssuerReconciler{
-			Client: mgr.GetClient(),
-			Log:    ctrl.Log.WithName("controllers").WithName("CustomIssuer"),
-			Scheme: mgr.GetScheme(),
-		})
-	if err != nil {
+	cir := &controllers.CustomIssuerReconciler{
+		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("CustomIssuer"),
+		Scheme: mgr.GetScheme(),
+	}
+	if err := cir.SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "CustomIssuer")
 		os.Exit(1)
 	}
 
-	err = builder.ControllerManagedBy(mgr).
-		For(&certmanager.CertificateRequest{}).
-		Complete(&controllers.CertificateRequestReconciler{
-			Client: mgr.GetClient(),
-			Log:    ctrl.Log.WithName("controllers").WithName("CertificateRequest"),
-			Scheme: mgr.GetScheme(),
-		})
-	if err != nil {
+	cr := &controllers.CertificateRequestReconciler{
+		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("CertificateRequest"),
+		Scheme: mgr.GetScheme(),
+	}
+	if err := cr.SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "CertificateRequest")
 		os.Exit(1)
 	}

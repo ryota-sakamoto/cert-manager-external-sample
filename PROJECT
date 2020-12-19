@@ -1,3 +1,7 @@
 domain: k8s.sakamo.dev
 repo: github.com/ryota-sakamoto/cert-manager-external-sample
+resources:
+- group: cert-manager
+  kind: CustomIssuer
+  version: v1
 version: "2"

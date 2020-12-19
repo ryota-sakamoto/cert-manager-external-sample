@@ -1,0 +1,7 @@
+apiVersion: cert-manager.k8s.sakamo.dev/v1
+kind: CustomIssuer
+metadata:
+  name: customissuer-sample
+spec:
+  # Add fields here
+  foo: bar

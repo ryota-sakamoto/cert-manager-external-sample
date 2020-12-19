@@ -1,0 +1,3 @@
+domain: k8s.sakamo.dev
+repo: github.com/ryota-sakamoto/cert-manager-external-sample
+version: "2"

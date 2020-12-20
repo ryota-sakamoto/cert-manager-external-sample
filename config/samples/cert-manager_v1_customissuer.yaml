@@ -3,5 +3,5 @@ kind: CustomIssuer
 metadata:
   name: customissuer-sample
 spec:
-  # Add fields here
-  foo: bar
+  user: user
+  password: password

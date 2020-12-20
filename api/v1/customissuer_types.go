@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -28,17 +29,28 @@ type CustomIssuerSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of CustomIssuer. Edit CustomIssuer_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// User is an example field of CustomIssuer.
+	User string `json:"user,omitempty"`
+
+	// Password is an example field of CustomIssuer.
+	Password string `json:"password,omitempty"`
 }
 
 // CustomIssuerStatus defines the observed state of CustomIssuer
 type CustomIssuerStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	// +optional
+	Conditions []CustomIssuerCondition `json:"conditions,omitempty"`
+}
+
+type CustomIssuerCondition struct {
+	Status corev1.ConditionStatus `json:"status"`
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
 
 // CustomIssuer is the Schema for the customissuers API
 type CustomIssuer struct {

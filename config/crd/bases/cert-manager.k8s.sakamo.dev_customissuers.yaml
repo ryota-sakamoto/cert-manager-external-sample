@@ -15,6 +15,8 @@ spec:
     plural: customissuers
     singular: customissuer
   scope: Namespaced
+  subresources:
+    status: {}
   validation:
     openAPIV3Schema:
       description: CustomIssuer is the Schema for the customissuers API
@@ -34,13 +36,25 @@ spec:
         spec:
           description: CustomIssuerSpec defines the desired state of CustomIssuer
           properties:
-            foo:
-              description: Foo is an example field of CustomIssuer. Edit CustomIssuer_types.go
-                to remove/update
+            password:
+              description: Password is an example field of CustomIssuer.
+              type: string
+            user:
+              description: User is an example field of CustomIssuer.
               type: string
           type: object
         status:
           description: CustomIssuerStatus defines the observed state of CustomIssuer
+          properties:
+            conditions:
+              items:
+                properties:
+                  status:
+                    type: string
+                required:
+                - status
+                type: object
+              type: array
           type: object
       type: object
   version: v1
